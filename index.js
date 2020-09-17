@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+app.use(express.json())
 
 let persons = [
 { 
@@ -59,6 +60,24 @@ app.get('/info', (req, res) => {
   ${myDate.toLocaleString( )}
   </p>
   `)
+})
+
+app.post('/api/persons', (req, res) => {
+  const newId = Math.floor(Math.random()*1000)
+
+  const body = req.body
+
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+      error: 'content missing'
+    })
+  } else {
+    const person = {...body, id: newId}
+    persons = persons.concat(person)
+    res.json(person)
+  }
+
+
 })
 
 const PORT = 3001
