@@ -4,7 +4,7 @@ const app = express()
 
 app.use(express.json())
 logger.token('msg', function (req, res) { return JSON.stringify(req.body) })
-app.use(logger(':method; :url; :status; :res[content-length] - :response-time ms; body: :msg'))
+app.use(logger(':method :url :status :res[content-length] - :response-time ms :msg'))
 
 
 let persons = [
