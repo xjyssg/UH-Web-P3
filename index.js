@@ -1,6 +1,11 @@
 const express = require('express')
+const logger = require('morgan')
 const app = express()
+
 app.use(express.json())
+logger.token('msg', function (req, res) { return JSON.stringify(req.body) })
+app.use(logger(':method; :url; :status; :res[content-length] - :response-time ms; body: :msg'))
+
 
 let persons = [
 { 
@@ -28,6 +33,7 @@ let persons = [
 
 
 app.get('/', (req, res) => {
+  console.log("hi")
   res.send('<h1>Helloooo World!</h1>')
 })
 
