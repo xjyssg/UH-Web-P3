@@ -1,1 +1,1 @@
-GET http://localhost:3001/api/persons
+GET https://polar-citadel-31800.herokuapp.com/api/persons
