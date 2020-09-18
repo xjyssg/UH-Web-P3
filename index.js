@@ -7,9 +7,10 @@ const PersonModel = require('./models/person')
 const app = express()
 
 
+
 app.use(cors())
-app.use(express.json())
 app.use(express.static('build'))
+app.use(express.json())
 logger.token('msg', function (req, res) { return JSON.stringify(req.body) })
 app.use(logger(':method :url :status :res[content-length] - :response-time ms :msg'))
 
@@ -25,20 +26,24 @@ app.get('/api/persons', (req, res) => {
   })
 })
 
-app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(person => person.id === id)
-  if (person) {
-    res.json(person)
-  } else {
-    res.status(404).end()
-  }
+app.get('/api/persons/:id', (req, res, next) => {
+  PersonModel.findById(req.params.id)
+    .then(person => {
+      if (person) {
+        res.json(person)
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter(person => person.id !== id)
-  res.status(204).end()
+app.delete('/api/persons/:id', (req, res, next) => {
+  PersonModel.findByIdAndDelete(req.params.id)
+    .then(result => {
+      res.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 
@@ -61,10 +66,6 @@ app.post('/api/persons', (req, res) => {
     return res.status(400).json({
       error: 'content missing'
     })
-  // } else if (persons.find(person => person.name === body.name)) {
-  //     return res.status(400).json({
-  //       error: 'name must be unique'
-  //     })
   } else {
     const person = new PersonModel({
       name: body.name,
@@ -79,6 +80,18 @@ app.post('/api/persons', (req, res) => {
 
 
 })
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } 
+
+  next(error)
+}
+app.use(errorHandler)
+
 
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
