@@ -8,7 +8,7 @@ if (process.argv.length < 3) {
 const password = process.argv[2]
 
 const url =
-  `mongodb://xue:${password}@cluster0-shard-00-00.emxfw.mongodb.net:27017,cluster0-shard-00-01.emxfw.mongodb.net:27017,cluster0-shard-00-02.emxfw.mongodb.net:27017/note-app?ssl=true&replicaSet=atlas-11i7l8-shard-0&authSource=admin&retryWrites=true&w=majority`
+  `mongodb://xue:${password}@cluster0-shard-00-00.emxfw.mongodb.net:27017,cluster0-shard-00-01.emxfw.mongodb.net:27017,cluster0-shard-00-02.emxfw.mongodb.net:27017/phonebook?ssl=true&replicaSet=atlas-11i7l8-shard-0&authSource=admin&retryWrites=true&w=majority`
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
