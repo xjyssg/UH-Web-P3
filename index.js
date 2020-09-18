@@ -48,13 +48,16 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 
 app.get('/info', (req, res) => {
-  var myDate = new Date();
-  res.send(`
-  <p>Phonebook has info for ${persons.length} people</p>
-  <p>
-  ${myDate.toLocaleString( )}
-  </p>
-  `)
+  var myDate = new Date()
+  PersonModel.find({}).then(persons => {
+    // res.json(persons)
+    res.send(`
+    <p>Phonebook has info for ${persons.length} people</p>
+    <p>
+    ${myDate.toLocaleString( )}
+    </p>
+    `)
+  })
 })
 
 app.post('/api/persons', (req, res) => {
