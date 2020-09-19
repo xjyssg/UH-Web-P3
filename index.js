@@ -60,7 +60,6 @@ app.get('/info', (req, res) => {
 })
 
 app.post('/api/persons', (req, res, next) => {
-  const newId = Math.floor(Math.random()*1000)
 
   const body = req.body
 
@@ -73,7 +72,6 @@ app.post('/api/persons', (req, res, next) => {
       name: body.name,
       number: body.number,
     })
-    
     person.save()
       .then(savedPerson => {
         console.log('person saved!')
@@ -90,7 +88,7 @@ app.put('/api/persons/:id', (req, res, next) => {
     number: body.number
   }
 
-  PersonModel.findByIdAndUpdate(req.params.id, person, {new: true, runValidators: true}, next)
+  PersonModel.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true }, next)
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
