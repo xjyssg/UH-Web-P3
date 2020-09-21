@@ -4,7 +4,7 @@ const app = express()
 
 const cors = require('cors') // cross-origin resource sharing
 const personRouter = require('./controllers/routeHandler')
-const middleware = require('')
+const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
